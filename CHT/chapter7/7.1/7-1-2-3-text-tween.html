@@ -1,0 +1,62 @@
+<html>  
+  <head>  
+        <meta charset=big5"utf-8">  
+        <title>7.1.2.3 text和tween</title>  
+  </head> 
+  <style>
+  </style>
+<body>
+
+<script src="../../d3/d3.min.js" charset="utf-8"></script> 
+<script>  
+
+var width  = 500;	//SVG繪制區域的寬度
+var height = 500;	//SVG繪制區域的高度
+	
+var svg = d3.select("body")			//選取<body>
+			.append("svg")			//在<body>中加入<svg>
+			.attr("width", width)	//設定<svg>的寬度屬性
+			.attr("height", height);//設定<svg>的高度屬性
+
+var rect = svg.append("rect")
+				.attr("fill","steelblue")
+				.attr("x",10)
+				.attr("y",10)
+				.attr("width",100)
+				.attr("height",30);
+
+var rectTran = rect.transition()
+					.duration(2000)
+					.attrTween("width",
+						function(d, i, a) {
+							return function(t){
+								return Number(a) + t * 300;
+							}
+						}
+					);
+					
+var text = svg.append("text")
+				.attr("fill","white")
+				.attr("x",100)
+				.attr("y",10)
+				.attr("dy","1.2em")
+				.attr("text-anchor","end")
+				.text(100);
+
+var initx = text.attr("x");
+var initText = text.text();
+
+var textTran = text.transition()
+					.duration(2000)
+					.tween("text",function(){
+						return function(t){
+							d3.select(this)
+								.attr("x",Number(initx) + t * 300)
+								.text(Math.floor(Number(initText) + t * 300));
+						}
+					});
+
+</script> 
+
+</body>
+</html>
